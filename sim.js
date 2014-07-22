@@ -334,11 +334,7 @@ Simulator.BASE_SPPS = 7;
             var swings = options.swings || 0;
             if (!swings){
                 if (ability.SUIT_POWER_COST && !ability.COOLDOWN){
-                    if(options.spCost){
-                        swings = suitPower / options.spCost;
-                    } else {
-                        swings = suitPower / ability.SUIT_POWER_COST;
-                    }
+                    swings = suitPower / (options.spCost || ability.SUIT_POWER_COST);
                 } else if (!ability.SUIT_POWER_COST && !ability.COOLDOWN && !options.cooldown){
                     swings = timeLeft / ability.GCD;
                 } else {
@@ -353,6 +349,7 @@ Simulator.BASE_SPPS = 7;
             }
             swings *= (options.swingAdjustment || 1);
             var timeUsed = swings * (ability.GCD || 0);
+            var suitPowerUsed = (options.spCost || ability.SUIT_POWER_COST || 0) * swings;
             swings *= (ability.HIT_COUNT || 1);
 
             if (options.forceCrits){
@@ -366,7 +363,6 @@ Simulator.BASE_SPPS = 7;
                 crits += options.forceCrits;
             }
             var rawDamage = options.damageFn(stalker) * ((stalker.critHitSeverity * crits) + (hits - crits));
-            var suitPowerUsed = (options.spCost || ability.SUIT_POWER_COST || 0) * swings;
 
             return {
                 label: options.abilityName,
@@ -407,7 +403,7 @@ Simulator.BASE_SPPS = 7;
                 abilityName: 'CONCUSSIVE_KICKS',
                 damageFn: concussiveKicksDamage,
                 cdAdjustment: ckAdjustment,
-                swingsAdjustment: swingsAdjustment
+                swingAdjustment: swingsAdjustment
             });
 
             suitPower -= ck.suitPowerUsed;
