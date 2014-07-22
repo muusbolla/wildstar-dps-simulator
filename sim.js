@@ -134,7 +134,8 @@ Simulator.ABILITIES = {
         AVERAGE_TICKS: 2,
         TICKS_PER_SECOND: 2,
         BUFF_DURATION_AVERAGE: 4.5,
-        CRIT_CHANCE_AVERAGE: 0.0567
+        CRIT_CHANCE_AVERAGE: 0.0567,
+        BONUS_CRIT_CHANCE_PER_TIER: 0.005
     },
     STEALTH: {
         COOLDOWN: 25,
@@ -333,7 +334,11 @@ Simulator.BASE_SPPS = 7;
             var swings = options.swings || 0;
             if (!swings){
                 if (ability.SUIT_POWER_COST && !ability.COOLDOWN){
-                    swings = suitPower / ability.SUIT_POWER_COST;
+                    if(options.spCost){
+                        swings = suitPower / options.spCost;
+                    } else {
+                        swings = suitPower / ability.SUIT_POWER_COST;
+                    }
                 } else if (!ability.SUIT_POWER_COST && !ability.COOLDOWN && !options.cooldown){
                     swings = timeLeft / ability.GCD;
                 } else {
@@ -648,7 +653,7 @@ Simulator.BASE_SPPS = 7;
             var prepCastTime = PREP.AVERAGE_TICKS / PREP.TICKS_PER_SECOND;
             var prepCooldown = cooldown(stalker, 'PREPARATION') + prepCastTime;
             var prepUptime = PREP.BUFF_DURATION_AVERAGE / prepCooldown;
-            stalker.critHitChance += PREP.CRIT_CHANCE_AVERAGE * prepUptime;
+            stalker.critHitChance += (PREP.CRIT_CHANCE_AVERAGE + (PREP.BONUS_CRIT_CHANCE_PER_TIER * stalker.preparation)) * prepUptime;
         }
 
         if (stalker.killerInstinct){
