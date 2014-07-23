@@ -137,6 +137,11 @@ Simulator.ABILITIES = {
         CRIT_CHANCE_AVERAGE: 0.0567,
         BONUS_CRIT_CHANCE_PER_TIER: 0.005
     },
+    TACTICAL_RETREAT: {
+        GCD: 0,
+        COOLDOWN: 30,
+        TYPE: 'UTILITY'
+    },
     STEALTH: {
         COOLDOWN: 25,
         TYPE: 'NONE'
@@ -352,16 +357,14 @@ Simulator.BASE_SPPS = 7;
             var suitPowerUsed = (options.spCost || ability.SUIT_POWER_COST || 0) * swings;
             swings *= (ability.HIT_COUNT || 1);
 
-            if (options.forceCrits){
-                swings -= options.forceCrits;
-            }
             var hits = swings * (1 - deflectChance);
             var crits = hits * stalker.critHitChance;
+
             if (options.forceCrits){
-                swings += options.forceCrits;
-                hits += options.forceCrits;
-                crits += options.forceCrits;
+                var nonCritsToCrits = (options.forceCrits * (1 - stalker.critHitChance) * (1 - deflectChance));
+                crits += nonCritsToCrits;
             }
+            
             var rawDamage = options.damageFn(stalker) * ((stalker.critHitSeverity * crits) + (hits - crits));
 
             return {
@@ -473,6 +476,9 @@ Simulator.BASE_SPPS = 7;
 
         if (stalker.impale > -1){
             var stealthCount = duration / stealthCooldown(stalker);
+            if(stalker.tacticalRetreat > -1){
+                stealthCount += duration / cooldown(stalker, 'TACTICAL_RETREAT');
+            }
             var spCost = stalker.impale < 8 ? Simulator.ABILITIES.IMPALE.SUIT_POWER_COST : Simulator.ABILITIES.IMPALE.T8_SUIT_POWER_COST;
             var armorPierce = stalker.impale > 3 ? Simulator.ABILITIES.IMPALE.T4_ARMOR_PIERCE : 0;
 
@@ -586,19 +592,16 @@ Simulator.BASE_SPPS = 7;
                 return crits;
             }, 0);
 
-            var dSwings = totalCrits * Simulator.AMPS.DEVASTATE.PERCENT_LIFE_THRESHOLD;
-            var dHits = dSwings * (1 - deflectChance);
-            var dCrits = dHits * stalker.critHitChance;
-            var dDamage = devastateDamage(stalker, Simulator.AMPS.DEVASTATE.AP_COEFFICIENT) *
-                ((stalker.critHitSeverity * dCrits) + (dHits - dCrits));
+            var dHits = totalCrits * Simulator.AMPS.DEVASTATE.PERCENT_LIFE_THRESHOLD;
+            var dDamage = devastateDamage(stalker, Simulator.AMPS.DEVASTATE.AP_COEFFICIENT) * dHits;
 
             var devastate = {
                 label: 'DEVASTATE',
-                swings: dSwings,
+                swings: dHits,
                 hits: dHits,
-                crits: dCrits,
-                nonCrits: dHits - dCrits,
-                deflects: dSwings - dHits,
+                crits: 0,
+                nonCrits: dHits,
+                deflects: 0,
                 rawDamage: dDamage,
                 damageType: Simulator.AMPS.DEVASTATE.DAMAGE_TYPE,
                 damage: damageReduction(dDamage, stalker, 1),

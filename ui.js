@@ -95,7 +95,8 @@
             concussiveKicks: -1,
             collapse: 0,
             stagger: 0,
-            preparation: 0
+            preparation: 0,
+            tacticalRetreat: -1
         }
     });
 
@@ -286,6 +287,7 @@
             collapse: las.collapse,
             stagger: las.stagger,
             preparation: las.preparation,
+            tacticalRetreat: las.tacticalRetreat,
             // AMPS info
             killerInstinct: amps.killerInstinct,
             onslaught: amps.onslaught,
