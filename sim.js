@@ -289,8 +289,12 @@ Simulator.BASE_SPPS = 7;
             var awCooldown = cooldown(stalker, 'ANALYZE_WEAKNESS');
             if (stalker.analyzeWeakness === 8) awCooldown -= Simulator.ABILITIES.ANALYZE_WEAKNESS.T8_AVERAGE_CDR;
 
-            sp += (duration / awCooldown) * Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_BUFF_DURATION *
+            if (awCooldown <= Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_BUFF_DURATION){
+                sp += duration * Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_SPPS;
+            } else{
+                sp += (duration / awCooldown) * Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_BUFF_DURATION *
                 Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_SPPS;
+            }   
         }
         if (stalker.ruin > 3){
             var deflectChance = bound(0, 1, (stalker.enemyDeflectChance - stalker.strikeThroughChance));
