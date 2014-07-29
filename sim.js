@@ -294,7 +294,7 @@ Simulator.BASE_SPPS = 7;
             } else{
                 sp += (duration / awCooldown) * Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_BUFF_DURATION *
                 Simulator.ABILITIES.ANALYZE_WEAKNESS.T4_SPPS;
-            }   
+            }
         }
         if (stalker.ruin > 3){
             var deflectChance = bound(0, 1, (stalker.enemyDeflectChance - stalker.strikeThroughChance));
@@ -361,14 +361,20 @@ Simulator.BASE_SPPS = 7;
             var suitPowerUsed = (options.spCost || ability.SUIT_POWER_COST || 0) * swings;
             swings *= (ability.HIT_COUNT || 1);
 
-            var hits = swings * (1 - deflectChance);
-            var crits = hits * stalker.critHitChance;
+            if (options.forceCrits){
+                swings -= options.forceCrits;
+            }
+
+            var crits = swings * stalker.critHitChance;
+            var hits = (swings - crits) * (1 - deflectChance);
 
             if (options.forceCrits){
-                var nonCritsToCrits = (options.forceCrits * (1 - stalker.critHitChance) * (1 - deflectChance));
-                crits += nonCritsToCrits;
+                crits += options.forceCrits;
+                swings += options.forceCrits;
             }
-            
+
+            hits += crits;
+
             var rawDamage = options.damageFn(stalker) * ((stalker.critHitSeverity * crits) + (hits - crits));
 
             return {
