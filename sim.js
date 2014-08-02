@@ -181,6 +181,7 @@ Simulator.AMPS = {
     },
     CUTTHROAT: {
         STACKS_TIL_DAMAGE: 10,
+        ICD: 0.33,
         AP_COEFFICIENT: 0.5192,
         ABILITIES_TO_IGNORE: ['ANALYZE_WEAKNESS', 'RUIN.DOT', 'FATAL_WOUNDS', 'CUTTHROAT', 'DEVASTATE']
     },
@@ -573,16 +574,20 @@ Simulator.BASE_SPPS = 7;
                 return hits;
             }, 0);
 
-            var ctHits = totalHits / Simulator.AMPS.CUTTHROAT.STACKS_TIL_DAMAGE;
-            var ctDamage = cutthroatDamage(stalker, Simulator.AMPS.CUTTHROAT.AP_COEFFICIENT) * ctHits;
+            totalHits = Math.max(totalHits, duration / Simulator.AMPS.CUTTHROAT.ICD)
+            var ctSwings = totalHits / Simulator.AMPS.CUTTHROAT.STACKS_TIL_DAMAGE;
+            var ctCrits = ctSwings * stalker.critHitChance;
+            var ctHits = ((ctSwings - ctCrits) * (1 - deflectChance)) + ctCrits;
+            var ctBaseDamage = cutthroatDamage(stalker, Simulator.AMPS.CUTTHROAT.AP_COEFFICIENT);
+            var ctDamage = ctBaseDamage * ((stalker.critHitSeverity * ctCrits) + (ctHits - ctCrits));
 
             var ct = {
                 label: 'CUTTHROAT',
-                swings: ctHits,
+                swings: ctSwings,
                 hits: ctHits,
-                crits: 0,
-                nonCrits: ctHits,
-                deflects: 0,
+                crits: ctCrits,
+                nonCrits: ctHits - ctCrits,
+                deflects: ctSwings - ctHits,
                 rawDamage: ctDamage,
                 damageType: Simulator.AMPS.CUTTHROAT.DAMAGE_TYPE,
                 damage: damageReduction(ctDamage, stalker, 0),
