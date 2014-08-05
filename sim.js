@@ -176,7 +176,7 @@ Simulator.AMPS = {
         SPPS: 3,
         // Enabler buffed to grant SP all the time. Only refreshes when spending SP and end result is <25 though.
         // Estimated uptime is now user-tuneable.
-        EFFECTIVENESS: stalker.enablerEffectiveness
+        EFFECTIVENESS: 0.8
     },
     CUTTHROAT: {
         STACKS_TIL_DAMAGE: 10,
@@ -312,7 +312,7 @@ Simulator.BASE_SPPS = 7;
             sp += (duration / cooldown(stalker, 'PREPARATION')) * spPerPrep;
         }
         if (stalker.enabler){
-            sp += Simulator.AMPS.ENABLER.SPPS * duration * Simulator.AMPS.ENABLER.EFFECTIVENESS;
+            sp += Simulator.AMPS.ENABLER.SPPS * duration * stalker.enablerEffectiveness;
         }
 
         return sp + 100;
