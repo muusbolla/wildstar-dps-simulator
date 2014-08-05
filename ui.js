@@ -275,7 +275,7 @@
             critHitSeverity: stats.critHitSeverity,
             strikeThroughChance: stats.strikeThroughChance,
             cooldownReduction: stats.cooldownReduction,
-            assaultCooldownReduction: stats.cooldownReduction,
+            assaultCooldownReduction: 0,
             armorPierce: stats.armorPierce,
             // LAS info
             impale: las.impale,
