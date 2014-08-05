@@ -283,6 +283,7 @@
             cooldownReduction: stats.cooldownReduction,
             assaultCooldownReduction: 0,
             armorPierce: stats.armorPierce,
+            ckEffectiveness: stats.ckEffectiveness,
             // LAS info
             impale: las.impale,
             shred: las.shred,
