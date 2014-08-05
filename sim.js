@@ -174,10 +174,9 @@ Simulator.AMPS = {
     },
     ENABLER: {
         SPPS: 3,
-        // Since Enabler is bugged and does not grant SP while below 25, this is an assumption that
-        // roughly 30% of your time is spent below 25, even if you make a conscious effort to
-        // straddle it.
-        EFFECTIVENESS: 0.7
+        // Enabler buffed to grant SP all the time. Only refreshes when spending SP and end result is <25 though.
+        // Estimated uptime is now 85%.
+        EFFECTIVENESS: 0.85
     },
     CUTTHROAT: {
         STACKS_TIL_DAMAGE: 10,
