@@ -259,7 +259,7 @@ Simulator.BASE_SPPS = 7;
     var cooldown = function(stalker, name){
         var cdr = stalker.cooldownReduction;
         if (Simulator.ABILITIES[name].TYPE === 'ASSAULT' && name != 'CONCUSSIVE_KICKS'){
-            cdr = stalker.assaultCooldownReduction;
+            cdr = stalker.cooldownReduction + stalker.assaultCooldownReduction;
         }
         return Simulator.ABILITIES[name].COOLDOWN * (1 - cdr);
     }
@@ -643,7 +643,7 @@ Simulator.BASE_SPPS = 7;
             var ck = abilities.CONCUSSIVE_KICKS;
             var CK = Simulator.ABILITIES.CONCUSSIVE_KICKS;
             var ckUseCount = ck.swings / CK.HIT_COUNT;
-            stalker.assaultCooldownReduction += ((ckUseCount * CK.T8_ASSAULT_CDR) / duration) *
+            stalker.assaultCooldownReduction = ((ckUseCount * CK.T8_ASSAULT_CDR) / duration) *
                 CK.T8_CDR_EFFECTIVENESS;
         }
 
