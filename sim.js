@@ -265,9 +265,10 @@ Simulator.BASE_SPPS = 7;
     }
 
     // Determines the cooldown of the Stalker's Nanoskin.
+    // Modified to include CK reducing cooldown of Stealth
     var stealthCooldown = function(stalker){
         var cdr = stalker.stealthMastery ? Simulator.AMPS.STEALTH_MASTERY.CDR : 0;
-        return Simulator.ABILITIES.STEALTH.COOLDOWN - cdr;
+        return (Simulator.ABILITIES.STEALTH.COOLDOWN - cdr)*(1 - stalker.assaultCooldownReduction);
     }
 
     // Utility to clone an object.
