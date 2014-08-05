@@ -96,7 +96,7 @@ Simulator.ABILITIES = {
         AP_TIER_COEFFICIENT: 0.02832,
         BASE_DAMAGE: 967.6,
         T8_ASSAULT_CDR: 2,
-        T8_CDR_EFFECTIVENESS: 0.9,
+        T8_CDR_EFFECTIVENESS: ckEffectiveness,
         DAMAGE_TYPE: 'phys'
     },
     COLLAPSE: {
