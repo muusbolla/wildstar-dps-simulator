@@ -175,8 +175,8 @@ Simulator.AMPS = {
     ENABLER: {
         SPPS: 3,
         // Enabler buffed to grant SP all the time. Only refreshes when spending SP and end result is <25 though.
-        // Estimated uptime is now 85%.
-        EFFECTIVENESS: 0.85
+        // Estimated uptime is now user-tuneable.
+        EFFECTIVENESS: stalker.enablerEffectiveness
     },
     CUTTHROAT: {
         STACKS_TIL_DAMAGE: 10,
