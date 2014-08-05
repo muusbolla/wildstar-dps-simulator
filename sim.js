@@ -645,7 +645,7 @@ Simulator.BASE_SPPS = 7;
             var CK = Simulator.ABILITIES.CONCUSSIVE_KICKS;
             var ckUseCount = ck.swings / CK.HIT_COUNT;
             stalker.assaultCooldownReduction = ((ckUseCount * CK.T8_ASSAULT_CDR) / duration) *
-                CK.T8_CDR_EFFECTIVENESS;
+                stalker.ckEffectiveness;
         }
 
         if (stalker.riposte){
