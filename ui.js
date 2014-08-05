@@ -53,6 +53,11 @@
             MIN: 0,
             MAX: 1,
             STEP: 0.01
+        },
+        ckEffectiveness: {
+            MIN: 0,
+            MAX: 1,
+            STEP: 0.01
         }
     };
 
@@ -81,7 +86,8 @@
             armorPierce: 0.00,
             fightDuration: 180,
             enemyMitigation: 0.3,
-            enemyDeflectChance: 0.12
+            enemyDeflectChance: 0.12,
+            ckEffectiveness: 0.8
         }
     });
 
