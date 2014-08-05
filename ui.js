@@ -54,7 +54,12 @@
             MAX: 1,
             STEP: 0.01
         },
-        ckEffectiveness: {
+        ckT8Effectiveness: {
+            MIN: 0,
+            MAX: 1,
+            STEP: 0.01
+        },
+        enablerEffectiveness: {
             MIN: 0,
             MAX: 1,
             STEP: 0.01
@@ -87,7 +92,8 @@
             fightDuration: 180,
             enemyMitigation: 0.3,
             enemyDeflectChance: 0.12,
-            ckEffectiveness: 0.8
+            ckT8Effectiveness: 0.8,
+            enablerEffectiveness: 0.8
         }
     });
 
@@ -283,7 +289,8 @@
             cooldownReduction: stats.cooldownReduction,
             assaultCooldownReduction: 0,
             armorPierce: stats.armorPierce,
-            ckEffectiveness: stats.ckEffectiveness,
+            ckT8Effectiveness: stats.ckT8Effectiveness,
+            enablerEffectiveness: stats.enablerEffectiveness,
             // LAS info
             impale: las.impale,
             shred: las.shred,
